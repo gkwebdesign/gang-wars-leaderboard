@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gang Wars Leaderboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Gang Wars Leaderboard</h1>
+    <div class="leaderboard">
+      <div class="row header">
+        <span class="gang-name">Gang Name</span>
+        <span class="points">Points</span>
+      </div>
+      <div id="rows"></div>
+    </div>
+  </div>
+
+  <script>
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT3xiYNiWQcKMZoFWNIegC2z1B04UjqRLNVE2Tlyxh43ew9a_UkDegQEPu2Qph_8q1cnd61QeMDnHK5/pub?gid=0&single=true&output=csv";
+
+    fetch(csvUrl)
+      .then(res => res.text())
+      .then(csv => {
+        const [headerLine, ...lines] = csv.trim().split("\n");
+        const headers = headerLine.split(",").map(h => h.trim());
+        const data = lines.map(line => {
+          const values = line.split(",");
+          const obj = {};
+          headers.forEach((h, i) => {
+            obj[h] = isNaN(values[i]) ? values[i] : +values[i];
+          });
+          return obj;
+        });
+
+        data.sort((a, b) => b["Points"] - a["Points"]);
+
+        const rowsContainer = document.getElementById("rows");
+        data.forEach((gang, index) => {
+          const row = document.createElement("div");
+          row.className = `row ${index % 2 === 0 ? 'even' : 'odd'}`;
+          row.innerHTML = `
+            <span class="gang-name">${gang["Gang Name"]}</span>
+            <span class="points">${gang["Points"]}</span>
+          `;
+          rowsContainer.appendChild(row);
+        });
+      });
+  </script>
+</body>
+</html>
