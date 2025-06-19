@@ -29,13 +29,8 @@
       background-color: #666;
     }
 
-    /* High contrast for screenshot mode */
     .screenshot-mode {
-      color: #ffffff !important;
-    }
-
-    .screenshot-mode .row {
-      background-color: #333 !important;
+      color: #fff !important;
     }
 
     .screenshot-mode .header {
@@ -92,8 +87,18 @@
       const leaderboard = document.getElementById('leaderboard');
       leaderboard.classList.add('screenshot-mode');
 
+      // Apply explicit colors to rows for the screenshot
+      const rows = leaderboard.querySelectorAll('.row');
+      rows.forEach((row, index) => {
+        row.style.backgroundColor = index % 2 === 0 ? '#333' : '#222';
+      });
+
       html2canvas(leaderboard).then(canvas => {
         canvas.toBlob(blob => {
+          // Cleanup: remove inline styles + screenshot mode
+          rows.forEach(row => {
+            row.style.backgroundColor = '';
+          });
           leaderboard.classList.remove('screenshot-mode');
 
           if (navigator.clipboard && navigator.clipboard.write) {
