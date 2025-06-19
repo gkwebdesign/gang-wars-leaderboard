@@ -4,7 +4,9 @@
     "puppeteer": "^24.10.2"
   },
   "scripts": {
-  "serve-and-screenshot": "concurrently \"npx serve .\" \"node generate-leaderboard-image.js\""
+  "serve-and-screenshot": "concurrently \"npx serve .\" \"node generate-leaderboard-image.js\"",
+  "update-leaderboard": "concurrently \"npx serve .\" \"node generate-leaderboard-image.js && git add public/leaderboard.png && git commit -m \\\"Update leaderboard image\\\" && git push\""
+
 }
 }
 
