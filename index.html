@@ -10,17 +10,19 @@
   <meta property="og:type" content="website" />
   <title>Gang Wars Leaderboard</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="container">
     <h1>Gang Wars Leaderboard</h1>
-    <div class="leaderboard">
+    <div class="leaderboard" id="leaderboard">
       <div class="row header">
         <span class="gang-name">Gang Name</span>
         <span class="points">Points</span>
       </div>
       <div id="rows"></div>
     </div>
+    <button id="copyScreenshotButton">Copy Leaderboard Screenshot</button>
   </div>
 
   <script>
@@ -53,6 +55,25 @@
           rowsContainer.appendChild(row);
         });
       });
+
+    document.getElementById('copyScreenshotButton').addEventListener('click', async () => {
+      const leaderboard = document.getElementById('leaderboard');
+      html2canvas(leaderboard).then(canvas => {
+        canvas.toBlob(blob => {
+          if (navigator.clipboard && navigator.clipboard.write) {
+            const item = new ClipboardItem({ 'image/png': blob });
+            navigator.clipboard.write([item]).then(() => {
+              alert('✅ Screenshot copied! You can now paste it into Discord.');
+            }).catch(err => {
+              console.error('❌ Clipboard write failed', err);
+              alert('❌ Failed to copy screenshot. Please check browser permissions.');
+            });
+          } else {
+            alert('❌ Clipboard API not supported in this browser.');
+          }
+        }, 'image/png');
+      });
+    });
   </script>
 </body>
 </html>
