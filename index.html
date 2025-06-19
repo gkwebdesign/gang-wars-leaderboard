@@ -28,6 +28,20 @@
     #copyScreenshotButton:hover {
       background-color: #666;
     }
+
+    /* High contrast for screenshot mode */
+    .screenshot-mode {
+      color: #ffffff !important;
+    }
+
+    .screenshot-mode .row {
+      background-color: #333 !important;
+    }
+
+    .screenshot-mode .header {
+      background-color: #222 !important;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -74,10 +88,14 @@
         });
       });
 
-    document.getElementById('copyScreenshotButton').addEventListener('click', async () => {
+    document.getElementById('copyScreenshotButton').addEventListener('click', () => {
       const leaderboard = document.getElementById('leaderboard');
+      leaderboard.classList.add('screenshot-mode');
+
       html2canvas(leaderboard).then(canvas => {
         canvas.toBlob(blob => {
+          leaderboard.classList.remove('screenshot-mode');
+
           if (navigator.clipboard && navigator.clipboard.write) {
             const item = new ClipboardItem({ 'image/png': blob });
             navigator.clipboard.write([item]).then(() => {
