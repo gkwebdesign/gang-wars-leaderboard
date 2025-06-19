@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 
-const leaderboardUrl = 'http://localhost:8000'; // Or wherever your leaderboard is served
+const leaderboardUrl = 'http://localhost:3000'; // Or wherever your leaderboard is served
 const outputImage = 'public/leaderboard.png';
 
 async function takeScreenshot() {

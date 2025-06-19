@@ -1,5 +1,10 @@
 {
   "dependencies": {
+    "concurrently": "^9.1.2",
     "puppeteer": "^24.10.2"
-  }
+  },
+  "scripts": {
+  "serve-and-screenshot": "concurrently \"npx serve .\" \"node generate-leaderboard-image.js\""
 }
+}
+
